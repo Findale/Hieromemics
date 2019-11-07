@@ -1,0 +1,30 @@
+@model Hieromemics.Models.SavedPics
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>SavedPics</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.users)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.users.UserID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pictures)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pictures.StoragePath)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.SavedPicID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
