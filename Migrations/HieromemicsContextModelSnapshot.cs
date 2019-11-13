@@ -121,8 +121,11 @@ namespace Hieromemics.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("FriendCode")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("FriendCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("userName")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserID");
 

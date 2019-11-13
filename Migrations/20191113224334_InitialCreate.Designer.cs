@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hieromemics.Migrations
 {
     [DbContext(typeof(HieromemicsContext))]
-    [Migration("20191113195426_InitialCreate")]
+    [Migration("20191113224334_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -123,8 +123,11 @@ namespace Hieromemics.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("FriendCode")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("FriendCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("userName")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserID");
 
