@@ -83,6 +83,23 @@ namespace Hieromemics.Migrations
                     b.ToTable("messages");
                 });
 
+            modelBuilder.Entity("Hieromemics.Models.pendingMatch", b =>
+                {
+                    b.Property<int>("pendingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("lookingId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("seekingId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("pendingId");
+
+                    b.ToTable("pendingMatch");
+                });
+
             modelBuilder.Entity("Hieromemics.Models.pictures", b =>
                 {
                     b.Property<int>("PicID")

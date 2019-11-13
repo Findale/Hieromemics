@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hieromemics.Migrations
 {
     [DbContext(typeof(HieromemicsContext))]
-    [Migration("20191113224334_InitialCreate")]
+    [Migration("20191113235319_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,6 +83,23 @@ namespace Hieromemics.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("messages");
+                });
+
+            modelBuilder.Entity("Hieromemics.Models.pendingMatch", b =>
+                {
+                    b.Property<int>("pendingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("lookingId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("seekingId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("pendingId");
+
+                    b.ToTable("pendingMatch");
                 });
 
             modelBuilder.Entity("Hieromemics.Models.pictures", b =>
