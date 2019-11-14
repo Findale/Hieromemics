@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hieromemics.Migrations
 {
     [DbContext(typeof(HieromemicsContext))]
-    [Migration("20191113235319_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20191114000325_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
