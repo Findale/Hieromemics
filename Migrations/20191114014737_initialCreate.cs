@@ -74,7 +74,7 @@ namespace Hieromemics.Migrations
                     FriendListID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserID = table.Column<int>(nullable: false),
-                    FriendCode = table.Column<int>(nullable: false)
+                    FriendCode = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -95,7 +95,7 @@ namespace Hieromemics.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     PicID = table.Column<int>(nullable: false),
                     UserID = table.Column<int>(nullable: false),
-                    FriendCode = table.Column<int>(nullable: false),
+                    FriendCode = table.Column<string>(nullable: true),
                     timestamp = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>

@@ -26,6 +26,8 @@ namespace Hieromemics.Controllers
                          select e;
             var friend = from f in _context.users
                          select f;
+            var pending = from p in _context.pendingMatch
+                            select p;
 
             if (!String.IsNullOrEmpty(fguid))
             {
@@ -59,7 +61,7 @@ namespace Hieromemics.Controllers
                 }
             }
 
-            return View(await movies.ToListAsync());
+            return View(await pending.Where(p => p.lookingId == uid).ToListAsync());
         }
 
         // GET: pendingMatch/Details/5

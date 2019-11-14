@@ -43,8 +43,8 @@ namespace Hieromemics.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("FriendCode")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("FriendCode")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserID")
                         .HasColumnType("INTEGER");
@@ -62,8 +62,8 @@ namespace Hieromemics.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("FriendCode")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("FriendCode")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("PicID")
                         .HasColumnType("INTEGER");
