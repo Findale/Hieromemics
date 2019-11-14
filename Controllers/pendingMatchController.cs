@@ -35,7 +35,6 @@ namespace Hieromemics.Controllers
 
                 existing = existing.Where(e => e.lookingId == friend.Single().UserID && e.seekingId== uid);
 
-
                 if(uid != friend.Single().UserID)
                 {
                     
