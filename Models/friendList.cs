@@ -12,7 +12,7 @@ namespace Hieromemics.Models
         [ForeignKey("users")]
         public int UserID{get; set;}
 
-        public int FriendCode {get; set;}
+        public string FriendCode {get; set;}
 
         public users users {get; set;}
     }

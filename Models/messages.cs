@@ -17,7 +17,7 @@ namespace Hieromemics.Models
         [ForeignKey("users")]
         public int UserID {get; set;} //Sender
 
-        public int FriendCode {get; set;} //Receiver
+        public string FriendCode {get; set;} //Receiver
 
         public users users {get; set;}
 
