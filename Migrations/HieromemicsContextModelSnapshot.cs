@@ -92,8 +92,8 @@ namespace Hieromemics.Migrations
                     b.Property<int>("lookingId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("seekingId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("seekingId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("pendingId");
 

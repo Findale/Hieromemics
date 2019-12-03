@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Hieromemics.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class reboot : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace Hieromemics.Migrations
                     pendingId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     lookingId = table.Column<int>(nullable: false),
-                    seekingId = table.Column<int>(nullable: false)
+                    seekingId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

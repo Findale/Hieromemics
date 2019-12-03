@@ -12,7 +12,7 @@ namespace Hieromemics.Models {
 
     public int lookingId {get; set;}
 
-    public int seekingId {get; set;}
+    public string seekingId {get; set;}
     }
 
 }

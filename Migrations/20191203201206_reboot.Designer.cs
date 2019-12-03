@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hieromemics.Migrations
 {
     [DbContext(typeof(HieromemicsContext))]
-    [Migration("20191114014737_initialCreate")]
-    partial class initialCreate
+    [Migration("20191203201206_reboot")]
+    partial class reboot
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -94,8 +94,8 @@ namespace Hieromemics.Migrations
                     b.Property<int>("lookingId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("seekingId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("seekingId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("pendingId");
 

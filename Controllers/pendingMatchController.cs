@@ -33,7 +33,7 @@ namespace Hieromemics.Controllers
             {
                 friend = friend.Where(f => f.FriendCode == fguid);
 
-                existing = existing.Where(e => e.lookingId == friend.Single().UserID && e.seekingId== uid);
+                //existing = existing.Where(e => e.lookingId == friend.Single().UserID && e.seekingId== uid);
 
                 if(uid != friend.Single().UserID)
                 {
@@ -43,7 +43,7 @@ namespace Hieromemics.Controllers
                 {
                     pendingMatch pend = new pendingMatch();
                     pend.lookingId = uid;
-                    pend.seekingId = friend.Single().UserID;
+                    //pend.seekingId = friend.Single().UserID;
                     await Create(pend);
                 }
                 else
@@ -101,9 +101,53 @@ namespace Hieromemics.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pendingMatch);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //_context.Add(pendingMatch);
+                //await _context.SaveChangesAsync();
+                //return RedirectToAction(nameof(Index));
+                var existing = from e in _context.pendingMatch
+                         select e;
+
+                var friend = from f in _context.users
+                         select f;
+                
+                var pending = from p in _context.pendingMatch
+                            select p;
+
+                var temp = friend.Where(f => f.UserID == pendingMatch.lookingId);
+
+                friend = friend.Where(f => f.FriendCode == pendingMatch.seekingId);
+
+                existing = existing.Where(e => e.lookingId == friend.Single().UserID && e.seekingId== temp.Single().FriendCode);
+
+                if (pendingMatch.lookingId != friend.Single().UserID)
+                {
+
+                }
+                else if (existing.Count() == 0)
+                {
+                    await Create(pendingMatch);
+                }
+                else
+                {
+                    friendListController flc = new friendListController(_context);
+                    friendList fren1 = new friendList();
+                    friendList fren2 = new friendList();
+                    var usr = from u in _context.users 
+                                select u;
+                    fren1.UserID = pendingMatch.lookingId;
+                    fren1.FriendCode = usr
+                                        .Where(u => u.FriendCode == pendingMatch.seekingId)
+                                        .Select(u => u.FriendCode)
+                                        .Single();
+                    fren2.UserID = friend.Single().UserID;
+                    fren2.FriendCode = usr
+                                        .Where(u => u.UserID == pendingMatch.lookingId)
+                                        .Select(u => u.FriendCode)
+                                        .Single();
+                    await flc.Create(fren1);
+                    await flc.Create(fren2);
+                }
+                return View(await pending.Where(p => p.lookingId == pendingMatch.lookingId).ToListAsync());
             }
             return View(pendingMatch);
         }
