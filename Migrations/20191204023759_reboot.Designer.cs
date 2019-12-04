@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hieromemics.Migrations
 {
     [DbContext(typeof(HieromemicsContext))]
-    [Migration("20191203201206_reboot")]
+    [Migration("20191204023759_reboot")]
     partial class reboot
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0");
+                .HasAnnotation("ProductVersion", "3.1.0");
 
             modelBuilder.Entity("Hieromemics.Models.SavedPics", b =>
                 {

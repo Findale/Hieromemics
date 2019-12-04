@@ -22,50 +22,7 @@ namespace Hieromemics.Controllers
         // GET: pendingMatch
         public async Task<IActionResult> Index(int uid, string fguid)
         {
-            var existing = from e in _context.pendingMatch
-                         select e;
-            var friend = from f in _context.users
-                         select f;
-            var pending = from p in _context.pendingMatch
-                            select p;
-
-            if (!String.IsNullOrEmpty(fguid))
-            {
-                friend = friend.Where(f => f.FriendCode == fguid);
-
-                //existing = existing.Where(e => e.lookingId == friend.Single().UserID && e.seekingId== uid);
-
-                if(uid != friend.Single().UserID)
-                {
-                    
-                }
-                else if (existing.Count() == 0)
-                {
-                    pendingMatch pend = new pendingMatch();
-                    pend.lookingId = uid;
-                    //pend.seekingId = friend.Single().UserID;
-                    await Create(pend);
-                }
-                else
-                {
-                    friendListController flc = new friendListController(_context);
-                    friendList fren1 = new friendList();
-                    friendList fren2 = new friendList();
-                    fren1.UserID = uid;
-                    fren1.FriendCode = fguid;
-                    fren2.UserID = friend.Single().UserID;
-                    var usr = from u in _context.users 
-                                select u;
-                    fren2.FriendCode = usr
-                                        .Where(u => u.UserID == uid)
-                                        .Select(u => u.FriendCode)
-                                        .Single();
-                    await flc.Create(fren1);
-                    await flc.Create(fren2);
-                }
-            }
-
-            return View(await pending.Where(p => p.lookingId == uid).ToListAsync());
+            return View(await _context.pendingMatch.ToListAsync());
         }
 
         // GET: pendingMatch/Details/5
@@ -101,9 +58,6 @@ namespace Hieromemics.Controllers
         {
             if (ModelState.IsValid)
             {
-                //_context.Add(pendingMatch);
-                //await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
                 var existing = from e in _context.pendingMatch
                          select e;
 
@@ -119,13 +73,15 @@ namespace Hieromemics.Controllers
 
                 existing = existing.Where(e => e.lookingId == friend.Single().UserID && e.seekingId== temp.Single().FriendCode);
 
-                if (pendingMatch.lookingId != friend.Single().UserID)
+                if (pendingMatch.lookingId == friend.Single().UserID)
                 {
-
+                    return View(pendingMatch);
                 }
                 else if (existing.Count() == 0)
                 {
-                    await Create(pendingMatch);
+                    _context.Add(pendingMatch);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
@@ -146,10 +102,16 @@ namespace Hieromemics.Controllers
                                         .Single();
                     await flc.Create(fren1);
                     await flc.Create(fren2);
+                    var remove = from u in _context.pendingMatch
+                                    select u;
+                    var remID = remove
+                                    .Where(u => u.lookingId == fren2.UserID)
+                                    .Select(u => u.pendingId)
+                                    .Single();
+                    await DeleteConfirmed(remID);
                 }
-                return View(await pending.Where(p => p.lookingId == pendingMatch.lookingId).ToListAsync());
             }
-            return View(pendingMatch);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: pendingMatch/Edit/5
@@ -165,7 +127,7 @@ namespace Hieromemics.Controllers
             {
                 return NotFound();
             }
-            return View(pendingMatch);
+            return View(_context.pendingMatch);
         }
 
         // POST: pendingMatch/Edit/5
