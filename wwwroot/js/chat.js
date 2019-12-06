@@ -17,18 +17,22 @@ connection.on("ReceiveMessage", function (user, message) {
     li.append(image);
     document.getElementById("messagesList").appendChild(li);
 });
-
+//start the hub
 connection.start().then(function () {
     document.getElementById("sendButton").disabled = false;
 }).catch(function (err) {
     return console.error(err.toString());
 });
 
+connection.invoke("OnConnectedAsync", user);
+
 document.getElementById("sendButton").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;
     var message = document.getElementById("messageInput").value;
-    connection.invoke("SendMessage", user, message).catch(function (err) {
+    connection.invoke("SendMessageToGroup", message).catch(function (err) {
         return console.error(err.toString());
     });
+
+connection.invoke("OnDisconnectedAsync", user)
     event.preventDefault();
 });
