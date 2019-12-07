@@ -20,6 +20,7 @@ namespace Hieromemics.Controllers
         }
         public async Task<IActionResult> Index(string username)
         {
+            //Console.WriteLine(username);
             if (username == "")
                 return View(nameof(HomeController.Index));
             int usrs;
@@ -31,11 +32,17 @@ namespace Hieromemics.Controllers
             {
                 return View(nameof(HomeController.Index));
             }
-            var personyfrens = _context.friendList.Where(pf => pf.UserID == usrs).Select(pf => pf.FriendCode).Single();
-            var frens = _context.users.Where(u => u.FriendCode == personyfrens).Select(cu => cu);
+            var friendCodes = _context.friendList
+                                .Where(u => u.UserID == usrs)
+                                .Select(fc => fc.FriendCode);
+            List<users> friends = (from code in friendCodes
+                            from user in _context.users
+                            where code == user.FriendCode
+                            select user).ToList();
             ViewData["UserID"] = usrs;
             ViewData["UserName"] = username;
-            return View(await frens.ToListAsync());
+            ViewData["Friends"] = friends;
+            return View(friends);
         }
     }
 }
