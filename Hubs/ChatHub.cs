@@ -5,34 +5,44 @@ using System;
 namespace Hieromemics.Hubs {
 
     public class ChatHub : Hub {
-        
-        
-        public async Task SendMessage(string user, string message) {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+        public Task SendMessageToAll(string message)
+        {
+            return Clients.All.SendAsync("ReceiveMessage", message);
         }
 
-        public async Task SendMessageToCaller(string user, string message) {
-            await Clients.Caller.SendAsync("ReceiveMessage",user, message);
+        public Task SendMessageToCaller(string message)
+        {
+            return Clients.Caller.SendAsync("ReceiveMessage", message);
         }
-        
-        public async Task SendMessageToFriend(string connectionId, string message) {
-            await Clients.Client(connectionId).SendAsync("ReceiveFrMessage", connectionId, message);
+
+        public Task SendMessageToUser(string connectionId, string message)
+        {
+            return Clients.Client(connectionId).SendAsync("ReceiveMessage", message);
         }
-        public override async Task OnConnectedAsync() {
-            await Clients.All.SendAsync("FriendConnected", Context.ConnectionId);
-            //await Groups.AddToGroupAsync(Context.ConnectionId, "UserFriendChat");
-            //await Clients.Group("UserFriendChat").SendAsync("Send", $"{Context.ConnectionId} has joined the group.");
+
+        public async Task JoinGroup(string group) 
+        {
+            Console.WriteLine(Context.ConnectionId);
+            Console.WriteLine(group);
+            await Groups.AddToGroupAsync(Context.ConnectionId, group);
+        }
+
+        public Task SendMessageToGroup(string group, string message)
+        {
+            return Clients.Group(group).SendAsync("ReceiveMessage", message);
+        }
+
+        public override async Task OnConnectedAsync()
+        {
+            await Clients.All.SendAsync("UserConnected", Context.ConnectionId);
             await base.OnConnectedAsync();
         }
-        
-        public override async Task OnDisconnectedAsync(Exception exception) {
-            await Clients.All.SendAsync("FriendDisconnected", Context.ConnectionId);
-            //await Groups.RemoveFromGroupAsync(Context.ConnectionId, "UserFriendChat");
-            //await Clients.Group("UserFriendChat").SendAsync("Send", $"{Context.ConnectionId} has left the chat.");
-            await base.OnDisconnectedAsync(exception);
+
+        public override async Task OnDisconnectedAsync(Exception ex)
+        {
+            await Clients.All.SendAsync("UserDisconnected", Context.ConnectionId);
+            await base.OnDisconnectedAsync(ex);
         }
-
-
-    }
+    }    
 }
 
