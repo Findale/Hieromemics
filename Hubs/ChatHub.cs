@@ -11,8 +11,8 @@ namespace Hieromemics.Hubs {
             await Clients.Group("UserFriendChat").SendAsync("Send", $"{Context.ConnectionId} has joined the group.");
             await base.OnConnectedAsync();
         }
-        public async Task SendMessageToGroup(string message) {
-            await Clients.Group("UserFriendChat").SendAsync("ReceiveMessage", message);
+        public async Task SendMessage(string user, string message) {
+            await Clients.Group("UserFriendChat").SendAsync("ReceiveMessage", user, message);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception) {

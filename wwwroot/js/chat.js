@@ -24,15 +24,13 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
-connection.invoke("OnConnectedAsync", user);
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;
     var message = document.getElementById("messageInput").value;
-    connection.invoke("SendMessageToGroup", message).catch(function (err) {
+    connection.invoke("SendMessage", user, message).catch(function (err) {
         return console.error(err.toString());
     });
 
-connection.invoke("OnDisconnectedAsync", user)
     event.preventDefault();
 });
