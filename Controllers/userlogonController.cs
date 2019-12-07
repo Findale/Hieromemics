@@ -22,7 +22,7 @@ namespace Hieromemics.Controllers
         {
             //Console.WriteLine(username);
             if (username == "")
-                return View(nameof(HomeController.Index));
+                return RedirectToAction("Index", "Home");
             int usrs;
             try
             {
@@ -30,7 +30,7 @@ namespace Hieromemics.Controllers
             }
             catch(Exception)
             {
-                return View(nameof(HomeController.Index));
+                return RedirectToAction("Index", "Home");
             }
             var friendCodes = _context.friendList
                                 .Where(u => u.UserID == usrs)
@@ -43,6 +43,11 @@ namespace Hieromemics.Controllers
             ViewData["UserName"] = username;
             ViewData["Friends"] = friends;
             return View(friends);
+        }
+
+        public async Task<IActionResult> Chat(int uid, int fid)
+        {
+            return View();
         }
     }
 }

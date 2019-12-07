@@ -3,16 +3,19 @@
 @{
     ViewData["Title"] = "Index";
     var friends = ViewData["Friends"] as List<users>;
-    var userN = ViewData["UserName"] as users;
+    var userN = ViewData["UserName"] as string;
+    var userI = ViewData["UserID"];
 }
 
-<h1>Index</h1>
+<h1>
+    Welcome
+</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @userN
+                Friends
             </th>
             <th></th>
         </tr>
@@ -25,13 +28,17 @@
                     @Html.DisplayFor(modelItem => item.userName)
                 </td>
 
+                <form asp-action="Chat">
+                    
+                </form>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.userName">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.userName">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.userName">Delete</a>
+                    <a asp-action="Chat" asp-route-uid="@userI" asp-route-fid="@item.UserID">Chat</a>
+                    <a asp-action="Delete" asp-route-id="@item.userName">Remove</a>
                 </td>
             </tr>
     }
+} else {
+    <div>Awww, you don't have any friends yet. Go send some requests!</div>
 }
     </tbody>
 </table>
