@@ -54,7 +54,7 @@ namespace Hieromemics.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,FriendCode")] users users)
+        public async Task<IActionResult> Create([Bind("UserID,FriendCode,userName")] users users)
         {
             if (ModelState.IsValid)
             {

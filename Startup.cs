@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Hieromemics.Data;
 using Microsoft.EntityFrameworkCore;
+using Hieromemics.Hubs;
 
 
 namespace Hieromemics
@@ -28,7 +29,8 @@ namespace Hieromemics
         {
             services.AddControllersWithViews();
             services.AddDbContext<HieromemicsContext>(options=>
-                options.UseSqlite(Configuration.GetConnectionString("HieromemicsContext")));
+            options.UseSqlite(Configuration.GetConnectionString("HieromemicsContext")));
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +58,7 @@ namespace Hieromemics
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapHub<ChatHub>("chatHub");
             });
         }
     }
