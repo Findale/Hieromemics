@@ -1,0 +1,45 @@
+@model List<Hieromemics.Models.users>
+
+@{
+    ViewData["Title"] = "Index";
+    var friends = ViewData["Friends"] as List<users>;
+    var userN = ViewData["UserName"] as string;
+    var userI = ViewData["UserID"];
+}
+
+<h1>
+    Welcome
+</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Friends
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@if (Model != null) {
+    @foreach (var item in friends) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.userName)
+                </td>
+
+                <form asp-action="Chat">
+                    
+                </form>
+                <td>
+                    <a asp-action="Chat" asp-route-uid="@userI" asp-route-fid="@item.UserID">Chat</a>
+                    <a asp-action="Delete" asp-route-id="@item.userName">Remove</a>
+                </td>
+            </tr>
+    }
+} else {
+    <div>Awww, you don't have any friends yet. Go send some requests!</div>
+}
+    </tbody>
+</table>
+

@@ -1,0 +1,21 @@
+@{
+    var uid = ViewData["uid"];
+    var grpid = ViewData["grpid"];
+}
+
+<div hidden id='id'>
+    @uid
+</div>
+<div hidden id='grp'>
+    @grpid
+</div>
+
+<h1>Just Chattin</h1>
+
+<textarea name="message" id="message"></textarea>
+<input type="button" id="chatButt" value="Send Message"/>
+
+<ul id="messages"></ul>
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
