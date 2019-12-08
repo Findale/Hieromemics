@@ -9,9 +9,6 @@ await sleep(1000);
 haha;*/
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 var groupid = document.getElementById("grp").toString();
-console.log(groupid);
-
-var groupFlag = true;
 
     
 //Disable send button until connection is established
@@ -29,21 +26,27 @@ connection.on("ReceiveMessage", function(message) {
     document.getElementById("messages").appendChild(sep);
 });
 
-connection.on("UserConnected", function(connectionId) {
-    var groupElement = document.getElementById("group");
+connection.on("UserConnected", function() {
+    /*var groupElement = document.getElementById("group");
     var option = document.createElement("option");
     option.text = connectionId;
     option.value = connectionId;
-    groupElement.add(option);
+    groupElement.add(option);*/
+    connection.invoke("JoinGroup", groupid).catch(function (err) {
+        return console.error(err.toString());
+    });
 });
 
-connection.on("UserDisconnected", function(connectionId) {
-    var groupElement = document.getElementById("group");
+connection.on("UserDisconnected", function() {
+    /*var groupElement = document.getElementById("group");
     for(var i = 0; i < groupElement.length; i++) {
         if (groupElement.options[i].value == connectionId) {
             groupElement.remove(i);
         }
-    }
+    }*/
+    connection.invoke("JoinGroup", groupid).catch(function (err) {
+        return console.error(err.toString());
+    });
 });
 
 connection.start().catch(function(err) {
@@ -76,13 +79,6 @@ document.getElementById("sendButton").addEventListener("click", function(event) 
 
 document.getElementById("chatButt").addEventListener("click", function(event) {
     var message = document.getElementById("message").value;
-    
-    if (groupFlag) {
-        connection.invoke("JoinGroup", groupid).catch(function (err) {
-            return console.error(err.toString());
-        });
-        groupFlag = false;
-    }
 
     connection.invoke("SendMessageToGroup", groupid, message).catch(function (err) {
         return console.error(err.toString());
