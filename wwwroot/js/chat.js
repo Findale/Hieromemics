@@ -9,21 +9,39 @@ await sleep(1000);
 haha;*/
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 var groupid = document.getElementById("grp").toString();
-
+var name = document.getElementById("name").textContent;
     
 //Disable send button until connection is established
 connection.on("ReceiveMessage", function(message) {
     
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    var colpos = msg.search(":");
+    var senderName = msg.substring(0,colpos);
+    var picLink = msg.substring(colpos+1);
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth();
+    var day =date.getDate();
+    var hour = date.getHours();
+    var minutes =date.getMinutes();
     var image = document.createElement("img");
-    image.src = msg; 
+    image.src = picLink; 
     image.width = 600;
     image.height = 315;
     var li = document.createElement("li");
-    li.append(image);
-    document.getElementById("messages").appendChild(li);
+    var mesList = document.getElementById("messages");
+    var dateString = document.createElement("p");
+    var dateNode = document.createTextNode("Sent: " + day + "/" + month + "/" + year + "   "  + hour +":" + minutes);
     var sep = document.createElement('hr');
-    document.getElementById("messages").appendChild(sep);
+    li.append(image); 
+    var bold = document.createElement('strong');
+    bold.append(senderName);
+    mesList.insertBefore(sep, mesList.childNodes[0]);
+    mesList.insertBefore(dateNode, mesList.childNodes[0]);
+    mesList.insertBefore(li, mesList.childNodes[0]);
+    mesList.insertBefore(bold, mesList.childNodes[0]);
+    //document.getElementById("messages").appendChild(li);
+    //document.getElementById("messages").appendChild(sep);
 });
 
 connection.on("UserConnected", function() {
@@ -80,10 +98,13 @@ document.getElementById("sendButton").addEventListener("click", function(event) 
 document.getElementById("chatButt").addEventListener("click", function(event) {
     var message = document.getElementById("message").value;
 
+    message = name + ":" + message;
     connection.invoke("SendMessageToGroup", groupid, message).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
+
+    document.getElementById("message").value = "";
 });
 /*
 document.getElementById("joinGroup").addEventListener("click", function(event) {

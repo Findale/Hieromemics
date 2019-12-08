@@ -12,6 +12,7 @@ namespace Hieromemics.Models
 
         public string FriendCode {get; set;} = Guid.NewGuid().ToString("N");
 
+        [Display(Name="User Name")]
         public string userName {get; set;}
 
         //[InverseProperty("SavedPics")]

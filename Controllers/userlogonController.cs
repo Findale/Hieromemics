@@ -20,13 +20,15 @@ namespace Hieromemics.Controllers
         }
         public async Task<IActionResult> Index(string username)
         {
-            //Console.WriteLine(username);
-            if (username == "")
-                return RedirectToAction("Index", "Home");
-            int usrs;
+            int usrs; 
+                /*if (Cookie Exists) {
+                    set usrs here
+                } else {
+                    return RedirectToAction("Index", "Home");
+                }*/
             try
             {
-                usrs = _context.users.Where(u => u.userName == username).Select(u => u.UserID).Single();
+                usrs = await _context.users.Where(u => u.userName == username).Select(u => u.UserID).SingleAsync();
             }
             catch(Exception)
             {
@@ -35,10 +37,10 @@ namespace Hieromemics.Controllers
             var friendCodes = _context.friendList
                                 .Where(u => u.UserID == usrs)
                                 .Select(fc => fc.FriendCode);
-            List<users> friends = (from code in friendCodes
+            List<users> friends = await (from code in friendCodes
                             from user in _context.users
                             where code == user.FriendCode
-                            select user).ToList();
+                            select user).ToListAsync();
             ViewData["UserID"] = usrs;
             ViewData["UserName"] = username;
             ViewData["Friends"] = friends;
@@ -55,7 +57,13 @@ namespace Hieromemics.Controllers
                 grpid = Guid.NewGuid().ToString();
                 activeSessions.Add(user.UserID, grpid);
             }
+            else
+            {
+                activeSessions.Remove(fren.UserID);
+            }
             ViewData["uid"] = user.UserID;
+            ViewData["user"] = fren.userName;
+            ViewData["name"] = user.userName;
             ViewData["grpid"] = grpid;
             return View();
         }

@@ -56,6 +56,7 @@ namespace Hieromemics.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("pendingId,lookingId,seekingId")] pendingMatch pendingMatch)
         {
+            var userName = await _context.users.Where(u => u.UserID == pendingMatch.lookingId).Select(u => u.userName).SingleAsync();
             if (ModelState.IsValid)
             {
                 var existing = from e in _context.pendingMatch
@@ -81,7 +82,6 @@ namespace Hieromemics.Controllers
                 {
                     _context.Add(pendingMatch);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
@@ -111,7 +111,9 @@ namespace Hieromemics.Controllers
                     await DeleteConfirmed(remID);
                 }
             }
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            string url = string.Format("/userlogon/index?username={0}", userName);
+            return Redirect(url);
         }
 
         // GET: pendingMatch/Edit/5

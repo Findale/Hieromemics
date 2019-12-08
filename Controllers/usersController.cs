@@ -60,9 +60,9 @@ namespace Hieromemics.Controllers
             {
                 _context.Add(users);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
-            return View(users);
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: users/Edit/5

@@ -17,23 +17,28 @@ namespace Hieromemics
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+            CreateDbIfNotExists(host);
+            host.Run();        
+        }
 
+        public static void CreateDbIfNotExists(Microsoft.Extensions.Hosting.IHost host)
+        {
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
 
                 try
                 {
-                    SeedData.Initialize(services);
+                    var context = services.GetRequiredService<HieromemicsContext>();
+                    DbInit.Initialize(context);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
+                    logger.LogError(ex, "An error occured created the DB.");
                 }
             }
-
-            host.Run();        }
+        }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
