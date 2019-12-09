@@ -56,6 +56,9 @@ namespace Hieromemics.Controllers
             string grpid;
             if (!activeSessions.TryGetValue(fren.UserID, out grpid))
             {
+                if (activeSessions.ContainsKey(user.UserID)) {
+                    activeSessions.Remove(user.UserID);
+                }
                 grpid = Guid.NewGuid().ToString();
                 activeSessions.Add(user.UserID, grpid);
             }
