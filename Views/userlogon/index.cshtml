@@ -5,11 +5,15 @@
     var friends = ViewData["Friends"] as List<users>;
     var userN = ViewData["UserName"] as string;
     var userI = ViewData["UserID"];
+    var code = ViewData["Code"] as string;
 }
 
 <h1>
     Welcome @userN
 </h1>
+<h3>
+    Your Friend Code: @code
+</h3>
 
 <table class="table">
     <thead>

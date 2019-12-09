@@ -41,8 +41,10 @@ namespace Hieromemics.Controllers
                             from user in _context.users
                             where code == user.FriendCode
                             select user).ToListAsync();
+            var mycode = await _context.users.Where(u => u.userName == username).Select(u => u.FriendCode).SingleAsync();
             ViewData["UserID"] = usrs;
             ViewData["UserName"] = username;
+            ViewData["Code"] = mycode;
             ViewData["Friends"] = friends;
             return View(friends);
         }
